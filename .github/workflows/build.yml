@@ -2,6 +2,9 @@
 name: build
 
 on:
+  push:
+    branches:
+      - main
   pull_request_target:
     branches:
       - main
@@ -16,10 +19,12 @@ jobs:
         run: ls -latr
       - name: Checkout - fork
         uses: actions/checkout@v4
+        continue-on-error: true
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           path: fork
       - name: List files - fork
         run: ls -latr fork
+        continue-on-error: true
       - name: Print test secret sha256
         run: echo ${{ secrets.TEST_SECRET }} | sha256sum
